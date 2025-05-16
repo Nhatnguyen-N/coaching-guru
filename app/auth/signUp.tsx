@@ -1,6 +1,7 @@
 import Colors from "@/constant/Colors";
+import { useUserDetail } from "@/context/UserDetailContext";
 import { router } from "expo-router";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, User } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import React, { useState } from "react";
 import {
@@ -18,7 +19,7 @@ export default function SignUp() {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const { userDetail, setUserDetail } = useUserDetail();
   const CreateNewAccount = () => {
     createUserWithEmailAndPassword(auth, email, password)
       .then(async (resp) => {
@@ -30,15 +31,17 @@ export default function SignUp() {
         console.log(e.message);
       });
   };
-  const SaveUser = async (user: any) => {
-    await setDoc(doc(db, "users", email), {
+  const SaveUser = async (user: User) => {
+    const data = {
       name: fullName,
       email: email,
       member: false,
       uid: user?.uid,
-    });
-
+    };
+    await setDoc(doc(db, "users", email), data);
+    setUserDetail(data);
     // Mavigate to New Screen
+    router.replace("/(tabs)/home");
   };
   return (
     <View

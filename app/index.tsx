@@ -1,7 +1,29 @@
+import { auth, db } from "@/config/firebaseConfig";
+import { useUserDetail } from "@/context/UserDetailContext";
 import { router } from "expo-router";
+import { onAuthStateChanged } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Colors from "../constant/Colors";
 export default function Index() {
+  const { userDetail, setUserDetail } = useUserDetail();
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      const result = await getDoc(doc(db, "users", user.email!));
+
+      if (result.exists()) {
+        const data = result.data();
+        setUserDetail({
+          uid: data.uid,
+          email: data.email,
+          name: data.name || "", // Xử lý trường optional
+          member: data.member ?? false, // Nullish coalescing
+        });
+      }
+      router.replace("/(tabs)/home");
+    }
+  });
+
   return (
     <View style={{ flex: 1, backgroundColor: Colors.WHITE }}>
       <Image
