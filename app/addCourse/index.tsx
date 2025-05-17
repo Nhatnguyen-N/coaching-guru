@@ -1,6 +1,11 @@
 import Button from "@/components/Shared/Button";
+import { db } from "@/config/firebaseConfig";
 import Colors from "@/constant/Colors";
 import Fonts from "@/constant/Fonts";
+import { useUserDetail } from "@/context/UserDetailContext";
+import { CourseType } from "@/types/Course.types";
+import { router } from "expo-router";
+import { doc, setDoc } from "firebase/firestore";
 import React, { useState } from "react";
 import {
   Keyboard,
@@ -11,12 +16,16 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { GenerateTopicsAIModel } from "../../config/AiModel";
+import {
+  GenerateCourseAIModel,
+  GenerateTopicsAIModel,
+} from "../../config/AiModel";
 import Prompt from "../../constant/Prompt";
 export default function AddCourse() {
+  const { userDetail, setUserDetail } = useUserDetail();
   const [loading, setLoading] = useState(false);
   const [userInput, setUserInput] = useState("");
-  const [topics, setTopics] = useState([]);
+  const [topics, setTopics] = useState<string[]>([]);
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
   const onGenerateTopic = async () => {
     setLoading(true);
@@ -33,7 +42,7 @@ export default function AddCourse() {
       setLoading(false);
     }
   };
-  const onTopicSelect = (topic: any) => {
+  const onTopicSelect = (topic: string) => {
     const isAlreadyExist = selectedTopics.find((item) => item === topic);
     if (!isAlreadyExist) {
       setSelectedTopics((prev) => [...prev, topic]);
@@ -42,8 +51,30 @@ export default function AddCourse() {
       setSelectedTopics(topics);
     }
   };
-  const onGenerateCourse = () => {};
-  const isTopicSelected = (topic: any) => {
+  const onGenerateCourse = async () => {
+    setLoading(true);
+    try {
+      const PROMPT = selectedTopics + Prompt.COURSE;
+      const aiResp = await GenerateCourseAIModel.sendMessage(PROMPT);
+      const resp = JSON.parse(aiResp.response.text());
+      const courses = resp.courses;
+      // Save Course info to Database
+      courses.forEach(async (course: CourseType) => {
+        await setDoc(doc(db, "Courses", Date.now().toString()), {
+          ...course,
+          createdOn: new Date(),
+          createdBy: userDetail?.email,
+        });
+      });
+      router.push("/(tabs)/home");
+    } catch (error: any) {
+      console.error("Lỗi AI:", error);
+      alert("Lỗi khi tạo chủ đề: " + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const isTopicSelected = (topic: string) => {
     const selection = selectedTopics.find((item) => item === topic);
     return selection ? true : false;
   };

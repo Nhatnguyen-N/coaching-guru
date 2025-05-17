@@ -12,6 +12,7 @@ export default function Header() {
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
+        padding: 15,
       }}
     >
       <View>

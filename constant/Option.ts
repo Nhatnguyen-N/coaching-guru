@@ -21,8 +21,9 @@ export const PraticeOption = [
 
     }
 ]
-
-export const imageAssets = {
+export type BannerImageKey = '/banner1.png' | '/banner2.png' | '/banner3.png' | '/banner4.png' | '/banner5.png';
+type ImageAssetsType = Record<BannerImageKey, any>;
+export const imageAssets: ImageAssetsType = {
     '/banner1.png': require('./../assets/images/banner1.png'),
     '/banner2.png': require('./../assets/images/banner2.png'),
     '/banner3.png': require('./../assets/images/banner3.png'),

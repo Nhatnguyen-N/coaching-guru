@@ -10,6 +10,7 @@ export default function NoCourse() {
       style={{
         marginTop: 40,
         alignItems: "center",
+        padding: 15,
       }}
     >
       <Image
