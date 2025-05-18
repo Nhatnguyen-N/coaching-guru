@@ -1,3 +1,4 @@
+
 export interface ContentType {
   code: string,
   example: string,
@@ -31,5 +32,7 @@ export interface CourseType {
   description: string,
   flashcards: FlashCardType[],
   qa: QaType[],
-  quiz: QuizType
+  quiz: QuizType,
+  docId: string,
+  completedChapter: string[],
 }
