@@ -3,7 +3,7 @@ import { db } from "@/config/firebaseConfig";
 import Colors from "@/constant/Colors";
 import Fonts from "@/constant/Fonts";
 import { ChapterType } from "@/types/Course.types";
-import { router, useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import React, { useState } from "react";
 import { Dimensions, StyleSheet, Text, View } from "react-native";
@@ -14,6 +14,7 @@ export default function ChapterView() {
   const chapters: ChapterType = JSON.parse(chapterParams as string);
   const [currentPage, setCurrentPage] = useState(0);
   const [loader, setLoader] = useState(false);
+  const router = useRouter();
   const GetProgress = (currentPage: number) => {
     const perc = currentPage / chapters?.content?.length;
     return perc;

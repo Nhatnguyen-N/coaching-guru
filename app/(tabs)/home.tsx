@@ -7,14 +7,15 @@ import { db } from "@/config/firebaseConfig";
 import Colors from "@/constant/Colors";
 import { useUserDetail } from "@/context/UserDetailContext";
 import { CourseType } from "@/types/Course.types";
+import { useFocusEffect } from "expo-router";
 import {
   collection,
   DocumentData,
-  getDocs,
+  onSnapshot,
   query,
   where,
 } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Platform, ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -24,21 +25,36 @@ export default function Home() {
     []
   );
 
-  useEffect(() => {
-    userDetail && GetCourseList();
-  }, [userDetail]);
+  useFocusEffect(
+    React.useCallback(() => {
+      if (!userDetail) return;
 
-  const GetCourseList = async () => {
-    setCourseList([]);
-    const q = query(
-      collection(db, "Courses"),
-      where("createdBy", "==", userDetail?.email)
-    );
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      setCourseList((prev) => [...prev, doc.data()]);
-    });
-  };
+      const q = query(
+        collection(db, "Courses"),
+        where("createdBy", "==", userDetail.email)
+      );
+
+      // Subscribe to realtime updates
+      const unsubscribe = onSnapshot(q, (snapshot) => {
+        const updatedCourses = snapshot.docs.map((doc) => doc.data());
+        setCourseList(updatedCourses);
+      });
+
+      return () => unsubscribe();
+    }, [userDetail]) // Chỉ chạy lại nếu userDetail thay đổi
+  );
+
+  // const GetCourseList = async () => {
+  //   setCourseList([]);
+  //   const q = query(
+  //     collection(db, "Courses"),
+  //     where("createdBy", "==", userDetail?.email)
+  //   );
+  //   const querySnapshot = await getDocs(q);
+  //   querySnapshot.forEach((doc) => {
+  //     setCourseList((prev) => [...prev, doc.data()]);
+  //   });
+  // };
 
   return (
     // Fix Scroll, margin

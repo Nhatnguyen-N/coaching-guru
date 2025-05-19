@@ -45,6 +45,7 @@ export default function CourseList({
                 params: {
                   courseId: item?.docId,
                   courseParams: JSON.stringify(item),
+                  key: item?.docId,
                 },
               })
             }

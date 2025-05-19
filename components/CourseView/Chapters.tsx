@@ -39,7 +39,7 @@ export default function Chapters({ course }: { course: CourseType }) {
         renderItem={({ item, index }) => (
           <TouchableOpacity
             onPress={() => {
-              router.push({
+              router.replace({
                 pathname: "/chapterView",
                 params: {
                   chapterParams: JSON.stringify(item),

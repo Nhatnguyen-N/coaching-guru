@@ -11,21 +11,21 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function CourseView() {
   const { courseParams, courseId } = useLocalSearchParams();
-  const [course, setCourse] = useState<CourseType>();
+  const [course, setCourse] = useState<CourseType | null>(null);
+  const GetCourseById = async () => {
+    const docRef = await getDoc(doc(db, "Courses", courseId as string));
+    const courseData = docRef.data();
+    setCourse(courseData as CourseType);
+    console.log(0);
+  };
   useEffect(() => {
     if (!courseParams) {
       GetCourseById();
     } else {
       setCourse(JSON.parse(courseParams as string));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [courseId]);
-  const GetCourseById = async () => {
-    const docRef = await getDoc(doc(db, "Courses", courseId as string));
-    const courseData = docRef.data();
-    setCourse(courseData as CourseType);
-  };
-  // const course: CourseType = JSON.parse(courseParams as string);
+
   return (
     course && (
       <SafeAreaView style={{ flex: 1, backgroundColor: Colors.WHITE }}>
