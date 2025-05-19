@@ -1,8 +1,9 @@
 import Colors from "@/constant/Colors";
 import Fonts from "@/constant/Fonts";
 import { PraticeOption } from "@/constant/Option";
+import { router } from "expo-router";
 import React from "react";
-import { FlatList, Image, Text, View } from "react-native";
+import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 
 export default function PraticeSection() {
   return (
@@ -18,7 +19,7 @@ export default function PraticeSection() {
           marginLeft: 15,
         }}
       >
-        PraticeSection
+        Pratice
       </Text>
       <View>
         <FlatList
@@ -29,7 +30,15 @@ export default function PraticeSection() {
             paddingLeft: 15,
           }}
           renderItem={({ item, index }) => (
-            <View
+            <TouchableOpacity
+              onPress={() =>
+                router.push({
+                  pathname: `/practice/[type]`,
+                  params: {
+                    type: item?.name,
+                  },
+                })
+              }
               key={index}
               style={{
                 flex: 1,
@@ -57,7 +66,7 @@ export default function PraticeSection() {
               >
                 {item?.name}
               </Text>
-            </View>
+            </TouchableOpacity>
           )}
         />
       </View>

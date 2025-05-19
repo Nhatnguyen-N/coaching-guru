@@ -16,7 +16,7 @@ import {
   where,
 } from "firebase/firestore";
 import React, { useState } from "react";
-import { Platform, ScrollView, View } from "react-native";
+import { Image, Platform, ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Home() {
@@ -59,30 +59,44 @@ export default function Home() {
   return (
     // Fix Scroll, margin
     <SafeAreaView
-      style={{
-        paddingTop: Platform.OS === "web" ? 45 : 0,
-        backgroundColor: Colors.WHITE,
-        flex: 1,
-      }}
+      style={{ backgroundColor: Colors.WHITE, flex: 1 }}
       edges={["top", "left", "right"]} // 🔥 Chỉ áp dụng safe area cho 3 cạnh (loại bỏ bottom)
     >
-      <Header />
-      <ScrollView
+      <Image
+        source={require("@/assets/images/wave.png")}
         style={{
-          flex: 1,
-          // backgroundColor: "blue",
+          position: "absolute",
+          width: "100%",
+          height: 700,
+        }}
+      />
+      <View
+        style={{
+          paddingRight: 15,
+          paddingTop: Platform.OS === "web" ? 45 : 0,
+          // backgroundColor: Colors.WHITE,
+          // flex: 1,
         }}
       >
-        {courseList?.length === 0 ? (
-          <NoCourse />
-        ) : (
-          <View>
-            <CourseProgress courseList={courseList as CourseType[]} />
-            <PraticeSection />
-            <CourseList courseList={courseList as CourseType[]} />
-          </View>
-        )}
-      </ScrollView>
+        <Header />
+        <ScrollView
+          contentContainerStyle={
+            {
+              // backgroundColor: Colors.WHITE,
+            }
+          }
+        >
+          {courseList?.length === 0 ? (
+            <NoCourse />
+          ) : (
+            <View>
+              <CourseProgress courseList={courseList as CourseType[]} />
+              <PraticeSection />
+              <CourseList courseList={courseList as CourseType[]} />
+            </View>
+          )}
+        </ScrollView>
+      </View>
     </SafeAreaView>
   );
 }

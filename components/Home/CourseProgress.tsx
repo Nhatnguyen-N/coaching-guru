@@ -10,14 +10,25 @@ export default function CourseProgress({
 }: {
   courseList: CourseType[];
 }) {
+  const GetCompletedChapter = (course: CourseType) => {
+    const completedChapter = course?.completedChapter?.length;
+    const perc = Number(completedChapter) / Number(course?.chapters.length);
+    return perc;
+  };
+
   return (
     <View
       style={{
-        marginTop: 10,
+        marginTop: 0,
       }}
     >
       <Text
-        style={{ fontFamily: Fonts.outfitBold, fontSize: 25, marginLeft: 15 }}
+        style={{
+          fontFamily: Fonts.outfitBold,
+          fontSize: 25,
+          marginLeft: 15,
+          color: Colors.WHITE,
+        }}
       >
         Progress
       </Text>
@@ -33,7 +44,7 @@ export default function CourseProgress({
             style={{
               margin: 7,
               padding: 15,
-              backgroundColor: Colors.BG_GRAY,
+              backgroundColor: Colors.WHITE,
               borderRadius: 15,
               width: 280,
             }}
@@ -77,14 +88,15 @@ export default function CourseProgress({
               </View>
             </View>
             <View style={{ marginTop: 10 }}>
-              <Progress.Bar progress={0} width={250} />
+              <Progress.Bar progress={GetCompletedChapter(item)} width={250} />
               <Text
                 style={{
                   fontFamily: Fonts.outfitRegular,
                   marginTop: 2,
                 }}
               >
-                0 Out of 5 Chapter Completed
+                {item?.completedChapter?.length ?? 0} Out of{" "}
+                {item?.chapters?.length} Chapter Completed
               </Text>
             </View>
           </View>

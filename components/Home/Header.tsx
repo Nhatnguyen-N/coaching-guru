@@ -1,3 +1,4 @@
+import Colors from "@/constant/Colors";
 import { useUserDetail } from "@/context/UserDetailContext";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
@@ -20,6 +21,7 @@ export default function Header() {
           style={{
             fontFamily: Fonts.outfitBold,
             fontSize: 25,
+            color: Colors.WHITE,
           }}
         >
           Hello, {userDetail?.name}
@@ -28,6 +30,7 @@ export default function Header() {
           style={{
             fontFamily: Fonts.outfitRegular,
             fontSize: 17,
+            color: Colors.WHITE,
           }}
         >
           Let&apos;s Get Started

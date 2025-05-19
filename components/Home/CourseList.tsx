@@ -35,7 +35,7 @@ export default function CourseList({
         horizontal={true}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{
-          paddingLeft: 15,
+          paddingLeft: 0,
         }}
         renderItem={({ item, index }) => (
           <TouchableOpacity
