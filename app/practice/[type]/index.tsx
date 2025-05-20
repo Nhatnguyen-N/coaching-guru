@@ -91,7 +91,10 @@ export default function PracticeTypeHomeScreen() {
         />
       )}
 
-      <CourseListGrid />
+      <CourseListGrid
+        option={option!}
+        courseList={courseList as CourseType[]}
+      />
     </View>
   );
 }

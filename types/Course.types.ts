@@ -19,7 +19,7 @@ export interface QaType {
 }
 export interface QuizType {
   correctAns: string,
-  option: string[],
+  options: string[],
   question: string,
 }
 export interface CourseType {
@@ -32,7 +32,7 @@ export interface CourseType {
   description: string,
   flashcards: FlashCardType[],
   qa: QaType[],
-  quiz: QuizType,
+  quiz: QuizType[],
   docId: string,
   completedChapter: string[],
 }

@@ -1,4 +1,12 @@
-export const PraticeOption = [
+import { ImageSourcePropType } from "react-native";
+
+export type PraticeOptionType = {
+    name: string,
+    image: ImageSourcePropType;
+    icon: ImageSourcePropType;
+    path: string
+}
+export const PraticeOption: PraticeOptionType[] = [
     {
         name: 'Quiz',
         image: require('./../assets/images/quizz.png'),
