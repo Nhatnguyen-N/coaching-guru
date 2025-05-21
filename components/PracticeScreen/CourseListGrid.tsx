@@ -3,7 +3,7 @@ import Fonts from "@/constant/Fonts";
 import { PraticeOptionType } from "@/constant/Option";
 import { CourseType } from "@/types/Course.types";
 import { Ionicons } from "@expo/vector-icons";
-import { router } from "expo-router";
+import { ExternalPathString, RelativePathString, router } from "expo-router";
 import React from "react";
 import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 
@@ -15,14 +15,12 @@ export default function CourseListGrid({
   option: PraticeOptionType;
 }) {
   const onPress = (course: CourseType) => {
-    if (option?.name === "Quiz") {
-      router.push({
-        pathname: "/quiz",
-        params: {
-          courseParams: JSON.stringify(course),
-        },
-      });
-    }
+    router.push({
+      pathname: option?.path as RelativePathString | ExternalPathString,
+      params: {
+        courseParams: JSON.stringify(course),
+      },
+    });
   };
   return (
     <View>

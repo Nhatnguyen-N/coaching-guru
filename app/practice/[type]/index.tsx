@@ -50,7 +50,7 @@ export default function PracticeTypeHomeScreen() {
     }
   };
   return (
-    <View>
+    <View style={{}}>
       <Image source={option?.image} style={{ height: 200, width: "100%" }} />
       <View
         style={{
@@ -59,6 +59,7 @@ export default function PracticeTypeHomeScreen() {
           flexDirection: "row",
           gap: 10,
           alignItems: "center",
+          paddingTop: 45,
         }}
       >
         <Pressable onPress={() => router.back()}>

@@ -79,13 +79,7 @@ export default function Home() {
         }}
       >
         <Header />
-        <ScrollView
-          contentContainerStyle={
-            {
-              // backgroundColor: Colors.WHITE,
-            }
-          }
-        >
+        <ScrollView>
           {courseList?.length === 0 ? (
             <NoCourse />
           ) : (

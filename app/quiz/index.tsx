@@ -16,7 +16,6 @@ import {
   View,
 } from "react-native";
 import * as Progress from "react-native-progress";
-import { SafeAreaView } from "react-native-safe-area-context";
 export interface ResultType {
   [key: number]: {
     // Key là số trang (currentPage)
@@ -73,7 +72,7 @@ export default function Quiz() {
   };
 
   return (
-    <SafeAreaView style={{}}>
+    <View style={{}}>
       <Image
         source={require("../../assets/images/wave.png")}
         style={{ height: 800, width: "100%" }}
@@ -93,7 +92,7 @@ export default function Quiz() {
             alignItems: "center",
           }}
         >
-          <Pressable>
+          <Pressable onPress={() => router.back()}>
             <Ionicons name="arrow-back" size={30} color={"white"} />
           </Pressable>
           <Text
@@ -180,6 +179,6 @@ export default function Quiz() {
           />
         )}
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
