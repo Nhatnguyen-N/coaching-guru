@@ -1,3 +1,4 @@
+import { Href } from "expo-router";
 import { ImageSourcePropType } from "react-native";
 
 export type PraticeOptionType = {
@@ -40,9 +41,15 @@ export const imageAssets: ImageAssetsType = {
 
 };
 
-export const CourseCategory = ["Tech & Coding", "Business & Finance", "Health & Fitness", "Science & Engineering", "Arts & Creativity"]
+export const CourseCategory = ["Tech & Coding", "Business & Finance", "Health & Fitness", "Science & Engineering", "Arts & Creativity"];
 
-export const ProfileMenu = [
+export type ProfileMenuType = {
+    name: string,
+    icon: string,
+    path: Href,
+};
+
+export const ProfileMenu: ProfileMenuType[] = [
     {
         name: 'Add Course',
         icon: 'add-outline', //Ionic Icons 
@@ -61,11 +68,11 @@ export const ProfileMenu = [
     {
         name: 'My Subscription',
         icon: 'shield-checkmark', //Ionic Icons 
-        path: ''
+        path: '' as Href
     },
     {
         name: 'Logout',
         icon: 'log-out', //Ionic Icons 
-        path: '/login'
+        path: '/auth/signIn'
     }
 ]

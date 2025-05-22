@@ -57,7 +57,6 @@ export default function Home() {
   // };
 
   return (
-    // Fix Scroll, margin
     <SafeAreaView
       style={{ backgroundColor: Colors.WHITE, flex: 1 }}
       edges={["top", "left", "right"]} // 🔥 Chỉ áp dụng safe area cho 3 cạnh (loại bỏ bottom)
@@ -86,7 +85,7 @@ export default function Home() {
             <View>
               <CourseProgress courseList={courseList as CourseType[]} />
               <PraticeSection />
-              <CourseList courseList={courseList as CourseType[]} />
+              <CourseList courseList={courseList as CourseType[]} enroll />
             </View>
           )}
         </ScrollView>

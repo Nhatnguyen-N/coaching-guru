@@ -28,6 +28,10 @@ export default function AddCourse() {
   const [topics, setTopics] = useState<string[]>([]);
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
   const onGenerateTopic = async () => {
+    if (userDetail?.member === false) {
+      router.push("/subscriptionWall");
+      return;
+    }
     setLoading(true);
     try {
       const PROMPT = userInput + Prompt.IDEA;

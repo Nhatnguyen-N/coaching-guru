@@ -10,7 +10,8 @@ import { FlatList } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function CourseView() {
-  const { courseParams, courseId } = useLocalSearchParams();
+  const { courseParams, courseId, enroll } = useLocalSearchParams();
+  const Enroll: boolean = JSON.parse(enroll as string);
   const [course, setCourse] = useState<CourseType | null>(null);
   const GetCourseById = async () => {
     const docRef = await getDoc(doc(db, "Courses", courseId as string));
@@ -33,7 +34,7 @@ export default function CourseView() {
           data={[{ key: "intro" }, { key: "chapters" }]} // Dummy data
           renderItem={({ item }) =>
             item.key === "intro" ? (
-              <Intro course={course as CourseType} />
+              <Intro course={course as CourseType} enroll={Enroll} />
             ) : (
               <Chapters course={course as CourseType} />
             )

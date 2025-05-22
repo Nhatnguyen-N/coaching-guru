@@ -1,40 +1,46 @@
+import { db } from "@/config/firebaseConfig";
 import Colors from "@/constant/Colors";
-import Fonts from "@/constant/Fonts";
 import { CourseType } from "@/types/Course.types";
-import { Ionicons } from "@expo/vector-icons";
-import { router } from "expo-router";
-import React from "react";
 import {
-  FlatList,
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { BannerImageKey, imageAssets } from "../../constant/Option";
-export default function CourseList({
-  courseList,
-  category,
-  enroll = false,
-}: {
-  courseList: CourseType[];
-  category?: string;
-  enroll: boolean;
-}) {
-  return (
-    <View style={{ marginTop: 15 }}>
-      <Text
-        style={{
-          fontFamily: Fonts.outfitBold,
-          fontSize: 25,
-          marginLeft: 15,
-        }}
-      >
-        {category ? category : "Courses"}
-      </Text>
+  collection,
+  DocumentData,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, View } from "react-native";
+import CourseList from "../Home/CourseList";
 
-      <FlatList
+export default function CourseListByCategory({
+  category,
+}: {
+  category: string;
+}) {
+  const [courseList, setCourseList] = useState<DocumentData[] | CourseType[]>(
+    []
+  );
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    GetCourseListByCategory();
+  }, [category]);
+  const GetCourseListByCategory = async () => {
+    setCourseList([]);
+    setLoading(true);
+    const q = query(
+      collection(db, "Courses"),
+      where("category", "==", category)
+    );
+    const querySnapshot = await getDocs(q);
+    querySnapshot?.forEach((doc) => {
+      setCourseList((prev) => [...prev, doc.data()]);
+    });
+    setLoading(false);
+  };
+
+  return (
+    <View>
+      {/* <FlatList
         data={courseList}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
@@ -50,7 +56,6 @@ export default function CourseList({
                   courseId: item?.docId,
                   courseParams: JSON.stringify(item),
                   key: item?.docId,
-                  enroll: JSON.stringify(enroll),
                 },
               })
             }
@@ -98,11 +103,17 @@ export default function CourseList({
             </View>
           </TouchableOpacity>
         )}
-      />
+      /> */}
+      {courseList?.length > 0 && (
+        <CourseList
+          courseList={courseList as CourseType[]}
+          category={category}
+          enroll={true}
+        />
+      )}
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   courseContainer: {
     padding: 10,

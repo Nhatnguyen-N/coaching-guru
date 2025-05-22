@@ -25,7 +25,9 @@ export default function Flashcards() {
   const [currentPage, setCurrentPage] = useState(0);
 
   const GetProgress = (currentPage: number) => {
-    const perc = currentPage / flashcard?.length;
+    console.log(currentPage, flashcard.length);
+
+    const perc = (currentPage + 2) / flashcard?.length;
     return perc;
   };
 
@@ -65,7 +67,7 @@ export default function Flashcards() {
               color: Colors.WHITE,
             }}
           >
-            {currentPage + 1} of {flashcard?.length}
+            {currentPage + 1} of {flashcard?.length - 1}
           </Text>
         </View>
         <View

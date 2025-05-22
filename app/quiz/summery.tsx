@@ -3,7 +3,14 @@ import Colors from "@/constant/Colors";
 import Fonts from "@/constant/Fonts";
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { FlatList, Image, StyleSheet, Text, View } from "react-native";
+import {
+  Dimensions,
+  FlatList,
+  Image,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ResultType } from ".";
 
@@ -31,7 +38,7 @@ export default function QuizSummery() {
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ flex: 1 }}>
       <Image
         source={require("../../assets/images/wave.png")}
         style={{
@@ -45,6 +52,7 @@ export default function QuizSummery() {
           width: "100%",
           padding: 35,
           paddingTop: 70,
+          flex: 1,
         }}
       >
         <Text
@@ -120,6 +128,9 @@ export default function QuizSummery() {
           style={{
             marginTop: 25,
             flex: 1,
+            height: 350,
+            maxHeight: Dimensions.get("screen").height * 0.5,
+            // backgroundColor: Colors.BLACK,
           }}
         >
           <Text style={{ fontFamily: Fonts.outfitBold, fontSize: 25 }}>
@@ -127,6 +138,7 @@ export default function QuizSummery() {
           </Text>
           <FlatList
             data={Object.entries(quizResult)}
+            style={{ height: "100%" }}
             renderItem={({ item, index }) => {
               const quizItem = item[1];
               return (

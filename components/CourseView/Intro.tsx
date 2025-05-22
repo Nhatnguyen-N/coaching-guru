@@ -1,14 +1,50 @@
+import { db } from "@/config/firebaseConfig";
 import Colors from "@/constant/Colors";
 import Fonts from "@/constant/Fonts";
 import { BannerImageKey, imageAssets } from "@/constant/Option";
+import { useUserDetail } from "@/context/UserDetailContext";
 import { CourseType } from "@/types/Course.types";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
-import React from "react";
+import { doc, setDoc } from "firebase/firestore";
+import React, { useState } from "react";
 import { Image, Pressable, Text, View } from "react-native";
 import Button from "../Shared/Button";
 
-export default function Intro({ course }: { course: CourseType }) {
+export default function Intro({
+  course,
+  enroll,
+}: {
+  course: CourseType;
+  enroll: boolean;
+}) {
+  const { userDetail, setUserDetail } = useUserDetail();
+  const [loading, setLoading] = useState(false);
+  const onEnrollCourse = async () => {
+    if (userDetail?.member === false) {
+      router.push("/subscriptionWall");
+      return;
+    }
+    const docId = Date.now().toString();
+    setLoading(true);
+    const data = {
+      ...course,
+      createdBy: userDetail?.email,
+      createdOn: new Date(),
+      enroll: true,
+    };
+    await setDoc(doc(db, "Courses", docId), data);
+    router.push({
+      pathname: `/courseView/[courseId]`,
+      params: {
+        courseId: docId,
+        courseParams: JSON.stringify(data),
+        key: docId,
+        enroll: JSON.stringify(false),
+      },
+    });
+    setLoading(false);
+  };
   return (
     <View>
       <Image
@@ -67,7 +103,15 @@ export default function Intro({ course }: { course: CourseType }) {
         >
           {course?.description}
         </Text>
-        <Button text="Start Now" />
+        {enroll === true ? (
+          <Button
+            text="Enroll Now"
+            loading={loading}
+            onPress={() => onEnrollCourse()}
+          />
+        ) : (
+          <Button text="Start Now" />
+        )}
       </View>
       <Pressable
         style={{
